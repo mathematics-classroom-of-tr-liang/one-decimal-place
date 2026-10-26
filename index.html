@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>認識一位小數</title>
+    <title>認識一位小數V2</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body {
@@ -194,13 +194,18 @@
             feedback.innerText = "加油！我們先把正方形圈起來。";
             feedback.className = "h-16 flex items-center justify-center text-2xl font-bold text-indigo-500";
             
+            // 重新啟用繪圖 Canvas 的互動
+            canvas.style.pointerEvents = 'auto';
             render();
         }
+
+        // 定義繪圖事件處理函式，方便後續移除監聽
+        let startHandler, moveHandler, endHandler;
 
         function setupDrawing() {
             const opArea = document.getElementById('op-area');
             
-            const start = (e) => {
+            startHandler = (e) => {
                 if (state.isCircled) return;
                 isDrawing = true;
                 points = [];
@@ -208,27 +213,41 @@
                 points.push(pos);
             };
 
-            const move = (e) => {
+            moveHandler = (e) => {
                 if (!isDrawing) return;
                 const pos = getPos(e);
                 points.push(pos);
                 drawPath();
             };
 
-            const end = () => {
+            endHandler = () => {
                 if (!isDrawing) return;
                 isDrawing = false;
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
                 checkCircle();
             };
 
-            opArea.addEventListener('mousedown', start);
-            opArea.addEventListener('mousemove', move);
-            window.addEventListener('mouseup', end);
+            opArea.addEventListener('mousedown', startHandler);
+            opArea.addEventListener('mousemove', moveHandler);
+            window.addEventListener('mouseup', endHandler);
             
-            opArea.addEventListener('touchstart', (e) => { e.preventDefault(); start(e); }, { passive: false });
-            opArea.addEventListener('touchmove', (e) => { e.preventDefault(); move(e); }, { passive: false });
-            window.addEventListener('touchend', end);
+            opArea.addEventListener('touchstart', startHandler, { passive: false });
+            opArea.addEventListener('touchmove', moveHandler, { passive: false });
+            window.addEventListener('touchend', endHandler);
+        }
+
+        // 關閉 Canvas 繪圖層，避免干擾後續觸控點擊
+        function disableDrawing() {
+            const opArea = document.getElementById('op-area');
+            opArea.removeEventListener('mousedown', startHandler);
+            opArea.removeEventListener('mousemove', moveHandler);
+            window.removeEventListener('mouseup', endHandler);
+            
+            opArea.removeEventListener('touchstart', startHandler);
+            opArea.removeEventListener('touchmove', moveHandler);
+            window.removeEventListener('touchend', endHandler);
+
+            canvas.style.pointerEvents = 'none';
         }
 
         // 修正觸控與滑鼠座標計算，將視窗座標轉為 Canvas 相對座標
@@ -284,6 +303,9 @@
             document.getElementById('step-2-card').classList.remove('step-locked');
             document.getElementById('step-2-card').classList.add('step-active');
             
+            // 第一步完成後，完全關閉繪圖圖層的觸控攔截！
+            disableDrawing();
+
             instruction.innerText = "第二步：請點點右邊的「變身按鈕」！";
             feedback.innerText = "圈得好準！現在來平分它吧。";
             render();
@@ -344,7 +366,18 @@
                     r.setAttribute("stroke-width", "2");
                     r.setAttribute("class", "piece-transition");
                     r.style.cursor = "pointer";
-                    r.onclick = () => togglePiece(i);
+                    
+                    // 同時支援點擊與觸控直接反應
+                    r.onclick = (e) => {
+                        e.stopPropagation();
+                        togglePiece(i);
+                    };
+                    r.ontouchstart = (e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        togglePiece(i);
+                    };
+
                     svg.appendChild(r);
                 }
                 const border = document.createElementNS("http://www.w3.org/2000/svg", "rect");
