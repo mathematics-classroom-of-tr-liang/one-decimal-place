@@ -259,9 +259,13 @@
                 clientY = e.clientY;
             }
 
+            // 計算 CSS 呈現尺寸與 Canvas 內部畫布尺寸的比例，精準校正軌跡位置
+            const scaleX = canvas.width / rect.width;
+            const scaleY = canvas.height / rect.height;
+
             return { 
-                x: clientX - rect.left, 
-                y: clientY - rect.top 
+                x: (clientX - rect.left) * scaleX, 
+                y: (clientY - rect.top) * scaleY 
             };
         }
 
