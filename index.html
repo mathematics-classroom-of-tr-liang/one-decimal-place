@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+<selection-tag><!DOCTYPE html>
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>認識一位小數V2</title>
+    <title>認識一位小數（一）</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body {
@@ -27,8 +27,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            pointer-events: none;
-            z-index: 20;
+            z-index: 30;
         }
         .step-active {
             border: 3px solid #fbbf24 !important;
@@ -44,19 +43,19 @@
 <body class="flex flex-col h-screen overflow-hidden text-slate-800">
 
     <!-- 頂部導覽列 -->
-    <header class="bg-white border-b p-4 flex justify-between items-center shadow-sm z-50">
+    <header class="bg-white border-b p-3 flex justify-between items-center shadow-sm z-50 shrink-0">
         <div class="flex items-center gap-4">
             <h1 class="text-xl font-black text-indigo-600 tracking-tight">一位小數探險家</h1>
-            <div id="mission-box" class="bg-indigo-600 text-white px-6 py-2 rounded-2xl flex items-center gap-3 shadow-md">
-                <span class="font-bold">今日目標：</span>
+            <div id="mission-box" class="bg-indigo-600 text-white px-5 py-1.5 rounded-2xl flex items-center gap-3 shadow-md">
+                <span class="font-bold text-sm">今日目標：</span>
                 <span id="target-decimal" class="text-2xl font-black">0.4</span>
             </div>
         </div>
         <div class="flex gap-2">
-            <button onclick="generateTask()" class="px-4 py-2 bg-amber-500 text-white rounded-xl font-bold shadow-md active:scale-95 transition-all">
+            <button onclick="generateTask()" class="px-4 py-1.5 bg-amber-500 text-white rounded-xl font-bold shadow-md active:scale-95 transition-all text-sm">
                 🎲 換個題目
             </button>
-            <button onclick="reset()" class="px-4 py-2 bg-slate-100 text-slate-600 rounded-xl font-bold active:scale-95 transition-all">
+            <button onclick="reset()" class="px-4 py-1.5 bg-slate-100 text-slate-600 rounded-xl font-bold active:scale-95 transition-all text-sm">
                 🔄 重置
             </button>
         </div>
@@ -69,19 +68,19 @@
         <!-- 左側：操作區域 -->
         <section id="op-area" class="flex-[2] p-4 flex flex-col items-center justify-between bg-white relative">
             <!-- 指導語文字區 -->
-            <div id="instruction-text" class="w-full text-center py-4 px-6 bg-slate-50 rounded-2xl border-2 border-slate-100 text-xl font-bold text-slate-600">
+            <div id="instruction-text" class="w-full text-center py-3 px-4 bg-slate-50 rounded-2xl border-2 border-slate-100 text-lg font-bold text-slate-600 shrink-0">
                 第一步：請用手指圈出正中間的正方形！
             </div>
 
             <!-- 表徵顯示區 -->
             <div id="canvas-container" class="flex-1 w-full flex items-center justify-center p-2 min-h-0">
-                <div id="workspace" class="relative bg-slate-50 border-2 border-dashed border-slate-200 rounded-[28px] w-full max-w-[360px] aspect-square flex items-center justify-center p-2 transition-all">
-                    <svg id="main-svg" viewBox="0 0 400 400" class="w-full h-full max-h-[340px]"></svg>
+                <div id="workspace" class="relative bg-slate-50 border-2 border-dashed border-slate-200 rounded-[28px] w-full max-w-[340px] aspect-square flex items-center justify-center p-2 transition-all">
+                    <svg id="main-svg" viewBox="0 0 400 400" class="w-full h-full max-h-[320px]"></svg>
                 </div>
             </div>
 
             <!-- 反饋提示區 -->
-            <div id="feedback" class="h-12 flex items-center justify-center text-xl font-bold text-indigo-500">
+            <div id="feedback" class="h-10 flex items-center justify-center text-lg font-bold text-indigo-500 shrink-0">
                 加油！我們先把正方形圈起來。
             </div>
         </section>
@@ -90,7 +89,7 @@
         <section class="flex-1 border-l bg-slate-50 p-4 flex flex-col gap-3 shadow-inner overflow-y-auto z-40">
             
             <div id="step-1-card" class="bg-white p-3 rounded-2xl shadow-sm border-2 border-slate-100 transition-all">
-                <h3 class="font-bold text-slate-500 mb-1 flex items-center gap-2 text-sm">
+                <h3 class="font-bold text-slate-500 mb-1 flex items-center gap-2 text-xs">
                     <span class="bg-slate-400 text-white w-5 h-5 rounded-full flex justify-center items-center text-xs">1</span>
                     確認單位量 (1個)：
                 </h3>
@@ -100,38 +99,38 @@
             </div>
 
             <div id="step-2-card" class="bg-white p-3 rounded-2xl shadow-sm border-2 border-slate-100 step-locked transition-all">
-                <h3 class="font-bold text-slate-500 mb-1 flex items-center gap-2 text-sm">
+                <h3 class="font-bold text-slate-500 mb-1 flex items-center gap-2 text-xs">
                     <span class="bg-slate-400 text-white w-5 h-5 rounded-full flex justify-center items-center text-xs">2</span>
                     平分成 10 份：
                 </h3>
-                <button id="split-btn" onclick="performSplit()" class="w-full py-2.5 bg-indigo-500 text-white rounded-xl font-bold text-base shadow-md active:scale-95">
+                <button id="split-btn" onclick="performSplit()" class="w-full py-2 bg-indigo-500 text-white rounded-xl font-bold text-sm shadow-md active:scale-95">
                     ✨ 變身：平分成 10 份
                 </button>
             </div>
 
             <div id="step-3-card" class="bg-white p-3 rounded-2xl shadow-sm border-2 border-slate-100 step-locked transition-all flex flex-col gap-2">
-                <h3 class="font-bold text-slate-500 flex items-center gap-2 text-sm">
+                <h3 class="font-bold text-slate-500 flex items-center gap-2 text-xs">
                     <span class="bg-slate-400 text-white w-5 h-5 rounded-full flex justify-center items-center text-xs">3</span>
                     看一看拿出多少：
                 </h3>
                 
-                <div class="flex gap-3">
-                    <div class="flex-1 bg-slate-50 p-2.5 rounded-xl border border-slate-100 flex flex-col items-center justify-center">
-                        <div id="numerator" class="text-2xl font-black text-purple-600">0</div>
+                <div class="flex gap-2">
+                    <div class="flex-1 bg-slate-50 p-2 rounded-xl border border-slate-100 flex flex-col items-center justify-center">
+                        <div id="numerator" class="text-xl font-black text-purple-600">0</div>
                         <div class="fraction-line w-6"></div>
-                        <div class="text-2xl font-black text-slate-400">10</div>
+                        <div class="text-xl font-black text-slate-400">10</div>
                     </div>
-                    <div class="flex-1 bg-purple-50 p-2.5 rounded-xl border border-purple-100 flex flex-col items-center justify-center">
+                    <div class="flex-1 bg-purple-50 p-2 rounded-xl border border-purple-100 flex flex-col items-center justify-center">
                         <div class="flex items-baseline gap-0.5">
-                            <span class="text-2xl font-black text-slate-300">0</span>
-                            <span class="text-2xl font-black text-slate-300">.</span>
-                            <span id="decimal-value" class="text-3xl font-black text-purple-600">0</span>
+                            <span class="text-xl font-black text-slate-300">0</span>
+                            <span class="text-xl font-black text-slate-300">.</span>
+                            <span id="decimal-value" class="text-2xl font-black text-purple-600">0</span>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <button onclick="checkAnswer()" id="check-btn" class="mt-auto w-full py-3.5 bg-emerald-500 text-white rounded-2xl font-bold text-lg shadow-md active:scale-95 step-locked">
+            <button onclick="checkAnswer()" id="check-btn" class="mt-auto w-full py-3 bg-emerald-500 text-white rounded-2xl font-bold text-base shadow-md active:scale-95 step-locked shrink-0">
                 檢查結果 ✅
             </button>
         </section>
@@ -141,12 +140,10 @@
         let state = {
             isCircled: false,
             isSplit: false,
-            // 紀錄每一格的選取狀態，預設皆為未選取 (false)
             selectedPieces: Array(10).fill(false),
             targetN: 4
         };
 
-        // 計算目前共選取了多少格
         function getSelectedCount() {
             return state.selectedPieces.filter(p => p).length;
         }
@@ -163,7 +160,7 @@
         function init() {
             window.addEventListener('resize', resizeCanvas);
             resizeCanvas();
-            setupDrawing();
+            setupDrawingEvents();
             generateTask();
         }
 
@@ -184,7 +181,7 @@
             state.selectedPieces = Array(10).fill(false);
             
             document.getElementById('unit-status').innerText = "尚未圈選圖形";
-            document.getElementById('unit-status').className = "py-3 text-center rounded-xl bg-slate-100 font-bold text-slate-400";
+            document.getElementById('unit-status').className = "py-2 text-center rounded-xl bg-slate-100 font-bold text-xs text-slate-400";
             document.getElementById('step-1-card').classList.add('step-active');
             document.getElementById('step-2-card').classList.add('step-locked');
             document.getElementById('step-3-card').classList.add('step-locked');
@@ -192,69 +189,76 @@
             
             instruction.innerText = "第一步：請用手指圈出正中間的正方形！";
             feedback.innerText = "加油！我們先把正方形圈起來。";
-            feedback.className = "h-16 flex items-center justify-center text-2xl font-bold text-indigo-500";
+            feedback.className = "h-10 flex items-center justify-center text-lg font-bold text-indigo-500";
             
-            // 重新啟用繪圖 Canvas 的互動
-            canvas.style.pointerEvents = 'auto';
+            // 重新啟用繪圖 Canvas 的互動層
+            enableDrawing();
             render();
         }
 
-        // 定義繪圖事件處理函式，方便後續移除監聽
-        let startHandler, moveHandler, endHandler;
-
-        function setupDrawing() {
-            const opArea = document.getElementById('op-area');
-            
-            startHandler = (e) => {
-                if (state.isCircled) return;
-                isDrawing = true;
-                points = [];
-                const pos = getPos(e);
-                points.push(pos);
-            };
-
-            moveHandler = (e) => {
-                if (!isDrawing) return;
-                const pos = getPos(e);
-                points.push(pos);
-                drawPath();
-            };
-
-            endHandler = () => {
-                if (!isDrawing) return;
-                isDrawing = false;
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                checkCircle();
-            };
-
-            opArea.addEventListener('mousedown', startHandler);
-            opArea.addEventListener('mousemove', moveHandler);
-            window.addEventListener('mouseup', endHandler);
-            
-            opArea.addEventListener('touchstart', startHandler, { passive: false });
-            opArea.addEventListener('touchmove', moveHandler, { passive: false });
-            window.addEventListener('touchend', endHandler);
+        function handlePointerStart(e) {
+            if (state.isCircled) return;
+            isDrawing = true;
+            points = [];
+            const pos = getPos(e);
+            points.push(pos);
         }
 
-        // 關閉 Canvas 繪圖層，避免干擾後續觸控點擊
-        function disableDrawing() {
-            const opArea = document.getElementById('op-area');
-            opArea.removeEventListener('mousedown', startHandler);
-            opArea.removeEventListener('mousemove', moveHandler);
-            window.removeEventListener('mouseup', endHandler);
-            
-            opArea.removeEventListener('touchstart', startHandler);
-            opArea.removeEventListener('touchmove', moveHandler);
-            window.removeEventListener('touchend', endHandler);
+        function handlePointerMove(e) {
+            if (!isDrawing) return;
+            const pos = getPos(e);
+            points.push(pos);
+            drawPath();
+        }
 
+        function handlePointerEnd() {
+            if (!isDrawing) return;
+            isDrawing = false;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            checkCircle();
+        }
+
+        function setupDrawingEvents() {
+            canvas.addEventListener('mousedown', handlePointerStart);
+            canvas.addEventListener('mousemove', handlePointerMove);
+            window.addEventListener('mouseup', handlePointerEnd);
+            
+            canvas.addEventListener('touchstart', (e) => {
+                if (!state.isCircled) e.preventDefault();
+                handlePointerStart(e);
+            }, { passive: false });
+
+            canvas.addEventListener('touchmove', (e) => {
+                if (!state.isCircled) e.preventDefault();
+                handlePointerMove(e);
+            }, { passive: false });
+
+            window.addEventListener('touchend', handlePointerEnd);
+        }
+
+        function enableDrawing() {
+            canvas.style.pointerEvents = 'auto';
+        }
+
+        function disableDrawing() {
             canvas.style.pointerEvents = 'none';
         }
 
-        // 修正觸控與滑鼠座標計算，將視窗座標轉為 Canvas 相對座標
         function getPos(e) {
             const rect = canvas.getBoundingClientRect();
-            const clientX = e.clientX || (e.touches && e.touches[0].clientX);
-            const clientY = e.clientY || (e.touches && e.touches[0].clientY);
+            let clientX, clientY;
+            
+            if (e.touches && e.touches.length > 0) {
+                clientX = e.touches[0].clientX;
+                clientY = e.touches[0].clientY;
+            } else if (e.changedTouches && e.changedTouches.length > 0) {
+                clientX = e.changedTouches[0].clientX;
+                clientY = e.changedTouches[0].clientY;
+            } else {
+                clientX = e.clientX;
+                clientY = e.clientY;
+            }
+
             return { 
                 x: clientX - rect.left, 
                 y: clientY - rect.top 
@@ -263,12 +267,13 @@
 
         function drawPath() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
+            if (points.length < 2) return;
+
             ctx.beginPath();
             ctx.strokeStyle = '#fbbf24';
             ctx.lineWidth = 6;
             ctx.lineJoin = 'round';
             ctx.lineCap = 'round';
-            if (points.length < 2) return;
             ctx.moveTo(points[0].x, points[0].y);
             for (let i = 1; i < points.length; i++) {
                 ctx.lineTo(points[i].x, points[i].y);
@@ -283,7 +288,6 @@
             const rect = workspace.getBoundingClientRect();
             const canvasRect = canvas.getBoundingClientRect();
 
-            // 將 workspace 的中心點轉換至 Canvas 相對座標系統中比較
             const centerX = (rect.left + rect.width / 2) - canvasRect.left;
             const centerY = (rect.top + rect.height / 2) - canvasRect.top;
 
@@ -303,7 +307,7 @@
             document.getElementById('step-2-card').classList.remove('step-locked');
             document.getElementById('step-2-card').classList.add('step-active');
             
-            // 第一步完成後，完全關閉繪圖圖層的觸控攔截！
+            // 第一步完成，禁用 Canvas 的點擊攔截
             disableDrawing();
 
             instruction.innerText = "第二步：請點點右邊的「變身按鈕」！";
@@ -323,7 +327,6 @@
             render();
         }
 
-        // 修改點選邏輯：點哪格就切換哪格的狀態 (單格獨立點選，一次一個 0.1)
         function togglePiece(idx) {
             if (!state.isSplit) return;
             state.selectedPieces[idx] = !state.selectedPieces[idx];
@@ -360,14 +363,12 @@
                     const r = document.createElementNS("http://www.w3.org/2000/svg", "rect");
                     r.setAttribute("x", pad + i * w); r.setAttribute("y", pad);
                     r.setAttribute("width", w); r.setAttribute("height", inner);
-                    // 根據該格是否被選取來著色
                     r.setAttribute("fill", state.selectedPieces[i] ? "#a855f7" : "#fff");
                     r.setAttribute("stroke", "#94a3b8");
                     r.setAttribute("stroke-width", "2");
                     r.setAttribute("class", "piece-transition");
                     r.style.cursor = "pointer";
                     
-                    // 同時支援點擊與觸控直接反應
                     r.onclick = (e) => {
                         e.stopPropagation();
                         togglePiece(i);
@@ -398,8 +399,8 @@
                 decNodes[0].classList.replace('text-slate-300', 'text-slate-700');
                 decNodes[1].classList.replace('text-slate-300', 'text-slate-700');
             } else {
-                decNodes[0].className = 'text-2xl font-black text-slate-300';
-                decNodes[1].className = 'text-2xl font-black text-slate-300';
+                decNodes[0].className = 'text-xl font-black text-slate-300';
+                decNodes[1].className = 'text-xl font-black text-slate-300';
             }
         }
 
@@ -407,12 +408,12 @@
             const currentCount = getSelectedCount();
             if (currentCount === state.targetN) {
                 feedback.innerText = "🌈 太棒了！這就是 0." + state.targetN + "！";
-                feedback.className = "h-12 flex items-center justify-center text-2xl font-black text-emerald-600 animate-bounce";
+                feedback.className = "h-10 flex items-center justify-center text-xl font-black text-emerald-600 animate-bounce";
                 instruction.innerText = "挑戰成功！你拿出了 " + currentCount + " 個 0.1。";
             } else {
                 const msg = currentCount < state.targetN ? "還差一點點，再點幾格！" : "拿太多了，再點一次選中的格子收回來。";
                 feedback.innerText = "❌ " + msg;
-                feedback.className = "h-12 flex items-center justify-center text-xl font-bold text-rose-500";
+                feedback.className = "h-10 flex items-center justify-center text-base font-bold text-rose-500";
             }
         }
 
@@ -420,3 +421,4 @@
     </script>
 </body>
 </html>
+</selection-tag>
